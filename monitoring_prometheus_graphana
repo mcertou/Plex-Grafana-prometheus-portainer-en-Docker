@@ -1,0 +1,47 @@
+This is much easier to setup than I originally thought it would be and we can do it in about 5 steps.
+
+///---- STEPS ----///
+
+Install Node Exporter:
+
+docker run -d   --net="host"   --pid="host"   -v "/:/host:ro,rslave"   quay.io/prometheus/node-exporter:latest   --path.rootfs=/host
+
+Create Prometheus Config:
+
+nano prometheus.yml
+
+global:
+  scrape_interval: 5s
+  external_labels:
+    monitor: 'node'
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['192.168.68.127:9090'] ## IP Address of the localhost
+  - job_name: 'node-exporter'
+    static_configs:
+      - targets: ['192.168.68.127:9100'] ## IP Address of the localhost
+
+Install Prometheus:
+
+docker run -d --name prometheus -p 9090:9090 -v /srv/dev-disk-by-label-Files/Config/Prometheus/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus
+
+Install Grafana:
+
+docker run -d --name=grafana -p 3456:3000 grafana/grafana
+
+Additional Notes
+
+Select DataSource on home page. Select Prometheus.
+Search for: "node exporter grafana dashboards" on Google
+Look for results on grafana.com
+Find ID of the dashboard you like
+(This is the dashboard I like: https://grafana.com/grafana/dashboard...)
+Import ID in Grafana
+
+That's basically it!
+
+
+
+
+
