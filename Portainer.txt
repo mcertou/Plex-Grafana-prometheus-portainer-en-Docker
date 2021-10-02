@@ -1,0 +1,26 @@
+How to Install Portainer on a Raspberry Pi!
+--------------------------------------------
+1. Ensure that your Raspberry Pi is up to date by running the commands below.
+
+sudo apt update
+sudo apt upgrade 
+
+2. The next thing we are going to run is the script to install Docker on our Raspberry Pi. Portainer is a GUI that manages Docker containers, so we need to ensure Docker is installed.
+
+curl -sSL https://get.docker.com | sh
+
+3. After the script completes, we need to give our Pi user account access to Docker.
+
+sudo usermod -aG docker pi
+
+4. After the user has been added, we are going to run a command to download the latest Portainer image for the ARM processor (which is what the Raspberry Pi uses).
+
+sudo docker pull portainer/portainer-ce:linux-arm
+
+5. Our final step is to create a new container that will run Portainer. If you are already using port 9000 on your Raspberry Pi for something else (this is unlikely), you will need to change the ports below.
+
+sudo docker run --restart always -d -p 9000:9000 -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:linux-arm
+P RPi5
+6. You should now be able to navigate to the IP address of your Raspberry Pi and port 9000 to access Portainer. When you get there, create a username and password.
+
+http://[RASPBERRY_PI_IP_ADDRESS]:9000
