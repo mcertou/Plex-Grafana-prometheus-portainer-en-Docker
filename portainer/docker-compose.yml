@@ -1,0 +1,26 @@
+version: '3'
+services:
+  portainer:
+    image: portainer/portainer
+
+    ports:
+      - "9500:9000"
+    restart: always
+    command: -H unix:///var/run/docker.sock
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  prometheus1:
+    image: prom/prometheus
+
+    ports:
+      - "9090:9090"
+      - "9100:9199"
+    restart: always
+
+    volumes:
+      - /home/pi/docker/monitoring/Prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+
+
+
+

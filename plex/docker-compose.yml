@@ -1,0 +1,14 @@
+version: "2.1"
+services:
+  plex:
+    image: jaymoulin/plex:1.16.5
+    ports:
+      - 32400:32400
+      - 33400:33400
+    hostname: raspberrypi
+    volumes:
+      - /home/pi/docker/plex/config:/config
+      - /home/pi/Videos:/movies
+      - /home/pi/Music:/music
+    restart: always
+    network_mode: "host"
